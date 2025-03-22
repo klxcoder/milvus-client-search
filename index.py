@@ -11,3 +11,6 @@ client.create_collection(
     collection_name="demo_collection",
     dimension=DIMENSION,
 )
+
+query = input("Enter a query: ")
+print(query.upper())
