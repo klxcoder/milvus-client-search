@@ -1,5 +1,5 @@
 from pymilvus import MilvusClient
-from embedding import encode_queries, DIMENSION
+from embedding import encode_queries, get_dimension
 
 client = MilvusClient("milvus_demo.db")
 
@@ -9,7 +9,7 @@ if client.has_collection(collection_name="demo_collection"):
     client.drop_collection(collection_name="demo_collection")
 client.create_collection(
     collection_name="demo_collection",
-    dimension=DIMENSION,
+    dimension=get_dimension(),
 )
 
 docs = [
