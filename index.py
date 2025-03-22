@@ -42,5 +42,6 @@ while True:
         limit=2,
         output_fields=["text"],
     )
+    print('----------Similar search results:')
     for entity in res[0]:
         print(entity['entity']['text'])
