@@ -41,7 +41,7 @@ while True:
     res = client.search(
         collection_name="demo_collection",
         data=query_vectors,
-        limit=2,
+        limit=10,
         output_fields=["text"],
     )
     print('Answer: ', end = "")

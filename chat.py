@@ -4,22 +4,32 @@ import json
 CHAT_MODEL = "llama3.2"
 
 def chat(query, rag_data):
-    rag_content = "\n".join(rag_data)
-
+    messages = [{
+        "role": "system",
+        "content": (
+            "Your name is klxcoder."
+        )
+    }]
+    for line in rag_data:
+        [question, answer] = line.split("?")
+        messages.append({
+            "role": "user",
+            "content": question.strip() + "?"
+        })
+        messages.append({
+            "role": "assistant",
+            "content": answer.strip()
+        })
+    messages.append({
+        "role": "user",
+        "content": query
+    })
+    print(messages)
     with requests.post(
         "http://localhost:11434/api/chat",
         json={
             "model": CHAT_MODEL,
-            "messages": [
-                {
-                    "role": "system",
-                    "content": f"Use the following information to answer questions accurately:\n{rag_content}"
-                },
-                {
-                    "role": "user",
-                    "content": query
-                }
-            ],
+            "messages": messages,
             "stream": True,
         },
         stream=True  # Enable streaming
