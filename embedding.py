@@ -1,10 +1,12 @@
 import random
 import requests
 
+EMBEDDING_MODEL = "all-minilm"
+
 def get_dimension():
     response = requests.post(
         "http://localhost:11434/api/show",
-        json={"model": "all-minilm"}
+        json={"model": EMBEDDING_MODEL}
     )
     response.raise_for_status()  # Ensure request success
     return response.json().get('model_info').get('bert.embedding_length')
@@ -15,7 +17,7 @@ def get_dimension():
 def encode_query(query):
     response = requests.post(
         "http://localhost:11434/api/embed",
-        json={"model": "all-minilm", "input": query}
+        json={"model": EMBEDDING_MODEL, "input": query}
     )
     response.raise_for_status()  # Ensure request success
     return response.json().get('embeddings')[0]
