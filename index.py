@@ -1,6 +1,7 @@
 from pymilvus import MilvusClient
 from embedding import encode_queries, get_dimension
 from docs import read_docs_to_list
+from chat import chat
 
 INPUT_FILE = 'docs.txt'
 
@@ -32,8 +33,9 @@ print(res)
 
 while True:
     print('-'*100)
-    query = input("Enter a query (empty line for quitting): ")
+    query = input("Question: ")
     if query=="":
+        print("Empty question -> Stop the program")
         break
     query_vectors = encode_queries([query])
     res = client.search(
@@ -42,6 +44,7 @@ while True:
         limit=2,
         output_fields=["text"],
     )
-    print('----------Similar search results:')
-    for entity in res[0]:
-        print(entity['entity']['text'])
+    print('Answer: ', end = "")
+    rag_data = [entity['entity']['text'] for entity in res[0]]
+    chat(query, rag_data)
+    print("")
