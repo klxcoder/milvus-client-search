@@ -3,7 +3,9 @@ import json
 
 CHAT_MODEL = "llama3.2"
 
-def chat(query):
+def chat(query, rag_data):
+    rag_content = "\n".join(rag_data)
+
     with requests.post(
         "http://localhost:11434/api/chat",
         json={
@@ -11,7 +13,7 @@ def chat(query):
             "messages": [
                 {
                     "role": "system",
-                    "content": "Use this data: Eiffel Tower is in Paris. It was built in 1889."
+                    "content": f"Use the following information to answer questions accurately:\n{rag_content}"
                 },
                 {
                     "role": "user",
@@ -30,4 +32,9 @@ def chat(query):
                 print(content, end="", flush=True)
 
 if __name__ == '__main__':
-    chat("Where is the Eiffel Tower?")
+    rag_data = [
+        "The Eiffel Tower is in Paris.",
+        "It was built in 1889.",
+        "Paris is the capital of France."
+    ]
+    chat("Where is the Eiffel Tower?", rag_data)
