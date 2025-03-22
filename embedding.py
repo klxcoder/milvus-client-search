@@ -2,8 +2,11 @@ import random
 
 DIMENSION = 768
 
+def encode_query(query):
+    return [random.uniform(-1, 1) for _ in range(DIMENSION)]
+
 def encode_queries(queries):
-    return [[random.uniform(-1, 1) for _ in range(DIMENSION)] for _ in queries]
+    return [encode_query(query) for query in queries]
 
 if __name__ == '__main__':
     query_vectors = encode_queries(["Who is Alan Turing?"])
