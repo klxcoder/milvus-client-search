@@ -32,7 +32,9 @@ print(res)
 
 while True:
     print('-'*100)
-    query = input("Enter a query: ")
+    query = input("Enter a query (empty line for quitting): ")
+    if query=="":
+        break
     query_vectors = encode_queries([query])
     res = client.search(
         collection_name="demo_collection",
