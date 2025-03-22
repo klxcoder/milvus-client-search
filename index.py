@@ -21,7 +21,7 @@ docs = [
 vectors = encode_queries(docs)
 
 data = [
-    {"id": i, "vector": vectors[i], "text": docs[i], "subject": "history"}
+    {"id": i, "vector": vectors[i], "text": docs[i]}
     for i in range(len(vectors))
 ]
 
@@ -29,5 +29,14 @@ res = client.insert(collection_name="demo_collection", data=data)
 
 print(res)
 
-query = input("Enter a query: ")
-print(query.upper())
+while True:
+    query = input("Enter a query: ")
+    query_vectors = encode_queries([query])
+    res = client.search(
+        collection_name="demo_collection",
+        data=query_vectors,
+        limit=2,
+        output_fields=["text"],
+    )
+    for entity in res[0]:
+        print(entity['entity']['text'])
