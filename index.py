@@ -1,5 +1,8 @@
 from pymilvus import MilvusClient
 from embedding import encode_queries, get_dimension
+from docs import read_docs_to_list
+
+INPUT_FILE = 'docs.txt'
 
 client = MilvusClient("milvus_demo.db")
 
@@ -12,11 +15,9 @@ client.create_collection(
     dimension=get_dimension(),
 )
 
-docs = [
-    "Artificial intelligence was founded as an academic discipline in 1956.",
-    "Alan Turing was the first person to conduct substantial research in AI.",
-    "Born in Maida Vale, London, Turing was raised in southern England.",
-]
+docs = read_docs_to_list(INPUT_FILE)
+
+print(f'Read {len(docs)} lines from {INPUT_FILE}')
 
 vectors = encode_queries(docs)
 
@@ -30,6 +31,7 @@ res = client.insert(collection_name="demo_collection", data=data)
 print(res)
 
 while True:
+    print('-'*100)
     query = input("Enter a query: ")
     query_vectors = encode_queries([query])
     res = client.search(
